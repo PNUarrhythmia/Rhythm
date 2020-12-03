@@ -7,7 +7,7 @@
 
 분석 모델 : RandomForest & Decision Tree in Python using Colab
 
-### 2-1) N, A, V, /, L, R 대상 1 - 02_Rhythm_Type_Classifier_ML.ipynb
+### 2-1) "(N", "(B", "(SVTA", "(VT" 대상 분류 - 02_Rhythm_Type_Classifier_ML.ipynb
 
 목적 :  4가지 Rhythm Type 증상에 대한 특성 분석 + 특성에 맞는 feature 추출, 분류에 적합한 모델 적용 및 개발
 
