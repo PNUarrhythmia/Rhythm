@@ -10,14 +10,14 @@
 ## 4가지 리듬별 특성 정리 - ML_feature.pdf
 
 * (B
-	- 'V' beat 비율 0.22
-	- 'N' beat 비율 0.56 ( '(B' Rhythm에서의 'N' beat 평균 비율) (높은 비율)
+	- 'V' beat 비율 0.4 ~ 0.5
+	- 'N' beat 비율 0.3 ~ 0.5
 * (N
-	- 'N' beat 비율 high
+	- 'N' beat 비율 0.6 ~ 0.9
 * (SVTA
-	- 'A' beat 비율 high
+	- 'A' beat 비율 0.75 ~ 0.95
 * (VT
-	- 'V' beat 비율 high
+	- 'N' beat 비율 0.7 ~ 0.8과 'V' beat 비율 0.15 ~ 0.25 or 'V' beat 비율 0.75
 	
 ### 적합 모델 결정 과정
 * 2D-CNN 적용 - 최소한으로 특징을 파악할 수 있는 이미지로 용량을 낮추었지만 여전히 메모리 용량 및 컴퓨터 성능 부족 문제가 발생하였다.
@@ -33,6 +33,8 @@ ML 적용 이유 : 각 리듭 타입별 존재하는 샘플 갯수가 1개에서
 #### preprocessing)
 
 * 원 데이터로부터, 각 리듬별 'count'(=한 리듬타입 안에 찍힌 심박수 값의 총 개수), 'R_count', 'R_mean', 'R_count_per_beat'(=R_cnt/beat개수), 'R_count_per_sig'(=R_cnt/count)에 대한 추가 정보와 각 리듬타입이 존재하는 비율('N', 'R', '[', ... etc)에 대한 데이터 생성
+
+* 전체 비트 타입과 리듬 내의 최댓값을 통해서 R peak를 계산(max 값의 0.9이상을 R로 판단)하였고 이를 feature로 넣어서 Random Forest와 Decision Tree를 적용하였다.
 
 /* (시행착오)
 
@@ -67,27 +69,30 @@ ML 적용 이유 : 각 리듭 타입별 존재하는 샘플 갯수가 1개에서
 
 * 원 데이터로부터, 각 리듬별 'count'(=한 리듬타입 안에 찍힌 심박수 값의 총 개수), 'R_count', 'R_mean', 'R_count_per_beat'(=R_cnt/beat개수), 'R_count_per_sig'(=R_cnt/count)에 대한 추가 정보와 각 리듬타입이 존재하는 비율('N', 'R', '[', ... etc)에 대한 데이터 생성
 
+* 전체 비트 타입과 리듬 내의 최댓값을 통해서 R peak를 계산(max 값의 0.9이상을 R로 판단)하였고 이를 feature로 넣어서 Random Forest와 Decision Tree를 적용하였다.
+
+
 * ['(VFL', '(SBR', '(IVR', '(BII', '(AB'] 의 Train/Test 분류 부정확한 것 제외한 모델.
 
 * Random Forest Model 1 )
 
 
-* Result) 전체 Rhythm에 대한 Mean Accuracy = 82.5%, Mean F1 score = 82%, 
+* Result) 전체 Rhythm에 대한 Mean Accuracy = 81.4%, Mean F1 score = 80.9%, 
 	Confusion matrix = 
 	- [[ 14   4   0  14   0   0   0   0   0   0]  - (AFIB
  	-  [  1  10   0   3   0   0   0   0   0   0]  - (AFL
- 	-  [  0   0  64   1   0   0   0   0   1   0]  - (B
- 	-  [  9   0   1 134   0   0  12   0   3   0]  - (N
+ 	-  [  0   0  64   2   0   0   0   0   0   0]  - (B
+ 	-  [  9   0   1 133   0   0  14   0   3   0]  - (N
  	-  [  0   0   0   1  10   0   0   0   0   0]  - (NOD
  	-  [  0   0   0   0   0  18   0   0   0   0]  - (P
- 	-  [  0   1   0  15   0   0  15   0   0   0]  - (PREX
- 	-  [  0   0   0   0   0   0   0   8   0   0]  - (SVTA
+ 	-  [  0   1   0  17   0   0  13   0   0   0]  - (PREX
+ 	-  [  0   0   0   1   0   0   0   7   0   0]  - (SVTA
  	-  [  0   0   0   0   0   0   0   0  25   0]  - (T
  	-  [  0   0   0   1   0   0   0   0   0  17]] - (VT
 
-+ Accuracy of '(N' : 0.843
++ Accuracy of '(N' : 0.831
 + Accuracy of '(B' : 0.970
-+ Accuracy of '(SVTA' : 1.000
++ Accuracy of '(SVTA' : 0.875
 + Accuracy of '(VT' : 0.944
 (소수 넷째자리 반올림)
 
@@ -95,12 +100,12 @@ ML 적용 이유 : 각 리듭 타입별 존재하는 샘플 갯수가 1개에서
 	
 
 
-* Result) 전체 Rhythm에 대한 Mean Accuracy = 76.4%, Mean F1 score = 69.5%, 
+* Result) 전체 Rhythm에 대한 Mean Accuracy = 76.7%, Mean F1 score = 69.8%, 
 	Confusion matrix = 
 	- [[  0   0   0  32   0   0   0   0   0   0]  - (AFIB
 	-  [  0   0   0  14   0   0   0   0   0   0]  - (AFL
 	-  [  0   0  64   1   0   0   0   0   1   0]  - (B
-	-  [  0   0   0 154   0   0   0   0   4   1]  - (N
+	-  [  0   0   0 155   0   0   0   0   4   0]  - (N
 	-  [  0   0   0   0  11   0   0   0   0   0]  - (NOD
 	-  [  0   0   0   0   0  18   0   0   0   0]  - (P
 	-  [  0   0   0  31   0   0   0   0   0   0]  - (PREX
@@ -113,4 +118,27 @@ ML 적용 이유 : 각 리듭 타입별 존재하는 샘플 갯수가 1개에서
 + Accuracy of '(SVTA' : 0.875
 + Accuracy of '(VT' : 0.944
 (소수 넷째자리 반올림)
+
+
+## 결론
+- 4 가지 rhythm type인 '(N', '(B', '(SVTA', '(VT' 증상에 대한
+
+1) 특성 분석
+* (B
+	- 'V' beat 비율 0.4 ~ 0.5
+	- 'N' beat 비율 0.3 ~ 0.5
+* (N
+	- 'N' beat 비율 0.6 ~ 0.9
+* (SVTA
+	- 'A' beat 비율 0.75 ~ 0.95
+* (VT
+	- 'N' beat 비율 0.7 ~ 0.8과 'V' beat 비율 0.15 ~ 0.25 or 'V' beat 비율 0.75
+
+2) 특성에 맞는 Feature 추출
+- 4 가지의 rhythm type을 분류할 때 우선적으로 rhythm내의 'V' beat의 비율, 그 다음으로는 'N' beat의 비율이 random forest의 변수 중요도 그래프를 통해서 파악할 수 있었다.
+
+- 임의로 정한 R값이 'V', 'N' beat에 이어 중요한 Feature인 것을 확인할 수 있었다.
+
+3) 분류에 적합한 모델 적용 및 개발
+- Random Forest와 Decision Tree를 이용하여 분류 모델 적용 및 Feature Importance를 파악하였다.
 
