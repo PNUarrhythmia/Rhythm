@@ -50,15 +50,15 @@ ML 적용 이유 : 각 리듭 타입별 존재하는 샘플 갯수가 1개에서
 ## 2-2) 4가지 리듬별 특성 정리
 
 * (B
-	- V beat 비율 mid
-	- N beat 비율 low
-	- + beat 비율 very low
+	- 'V' beat 비율 mid
+	- 'N' beat 비율 low
+	- '+' beat 비율 very low
 * (N
-	- N beat 비율 high
+	- 'N' beat 비율 high
 * (SVTA
-	- A beat 비율 high
-	- + beat 비율 mid
+	- 'A' beat 비율 high
+	- '+' beat 비율 mid
 * (VT
-	- V beat 비율 high
+	- 'V' beat 비율 high
 
 
